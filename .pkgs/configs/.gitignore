@@ -1,9 +1,8 @@
 # Node.js
 node_modules/
-**/node_modules/**
 
 # Build
-dist/
+!dist/
 out/
 build
 docs/internals/
@@ -42,10 +41,3 @@ stats.html
 *.bundled_*.mjs
 *.tgz
 .tsup
-
-
-
-.nx/cache
-.nx/workspace-data
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md

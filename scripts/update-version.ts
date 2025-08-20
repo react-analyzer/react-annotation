@@ -1,43 +1,42 @@
-import { NodeFileSystem, NodeRuntime } from "@effect/platform-node";
-import { Effect, Function as F, Logger, Predicate } from "effect";
-import { match, P } from "ts-pattern";
+import fs from "node:fs";
+
+import ansis from "ansis";
+import { isMatching, match, P } from "ts-pattern";
 
 import { glob } from "./lib/glob";
-import { readJsonFile, writeJsonFile } from "./lib/json";
-import { version } from "./version";
+import { ignores } from "./lib/ignores";
+import { version } from "./lib/version";
 
-const GLOB_PACKAGE_JSON = ["package.json", "packages/**/package.json"];
+const GLOB_PACKAGE_JSON = [
+  "package.json",
+  "packages/*/package.json",
+  "packages/*/*/package.json",
+];
 
-const mkTask = (path: string) =>
-  Effect.gen(function*() {
-    const packageJson = yield* readJsonFile(path);
-    if (!Predicate.isObject(packageJson)) {
-      return yield* Effect.die(`Invalid package.json at ${path}`);
-    }
-    const newVersion = yield* version;
-    const oldVersion = match(packageJson)
-      .with({ version: P.select(P.string) }, F.identity)
-      .otherwise(F.constant("0.0.0"));
-    if (oldVersion === newVersion) {
-      return yield* Effect.logDebug(`Skipping ${path} as it's already on version ${newVersion}`);
-    }
-    const packageJsonUpdated = {
-      ...packageJson,
-      version: newVersion,
-    };
-    yield* writeJsonFile(path, packageJsonUpdated);
-    yield* Effect.log(`Updated ${path} to version ${packageJsonUpdated.version}`);
-  });
+async function update(path: string) {
+  const packageJson = JSON.parse(fs.readFileSync(path, "utf8")) as unknown;
+  if (!isMatching({ version: P.string }, packageJson)) {
+    throw new Error(`Invalid package.json at ${path}`);
+  }
+  const newVersion = version;
+  const oldVersion = match(packageJson)
+    .with({ version: P.select(P.string) }, (v) => v)
+    .otherwise(() => "0.0.0");
+  if (oldVersion === newVersion) {
+    console.info(ansis.greenBright(`Skipping ${path} as it's already on version ${newVersion}`));
+    return;
+  }
+  const packageJsonUpdated = {
+    ...packageJson,
+    version: newVersion,
+  };
+  fs.writeFileSync(path, `${JSON.stringify(packageJsonUpdated, null, 2)}\n`);
+  console.info(ansis.green(`Updated ${path} to version ${packageJsonUpdated.version}`));
+}
 
-const program = Effect.gen(function*() {
-  const paths = yield* glob(GLOB_PACKAGE_JSON);
-  yield* Effect.all(paths.map(mkTask), { concurrency: 8 });
-});
+async function main() {
+  const tasks = glob(GLOB_PACKAGE_JSON, ignores);
+  await Promise.all(tasks.map((path) => update(path)));
+}
 
-const runnable = program.pipe(
-  Effect.provide(NodeFileSystem.layer),
-  Effect.provide(Logger.pretty),
-);
-
-NodeRuntime.runMain(runnable);
-// BunRuntime.runMain(runnable);
+await main();

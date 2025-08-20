@@ -1,14 +1,18 @@
 {
   "extends": [
-    "@tsconfig/strictest/tsconfig.json",
+    "@local/configs/tsconfig.base.json",
     "@tsconfig/node22/tsconfig.json"
   ],
   "compilerOptions": {
+    "lib": [
+      "DOM"
+    ],
     "module": "ESNext",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "strict": true,
+    "erasableSyntaxOnly": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
@@ -20,15 +24,15 @@
     ]
   },
   "include": [
-    "*.d.ts",
-    "*.config.ts",
-    "*.config.mts",
-    "test/*.ts",
-    "scripts/**/*.ts",
-    "packages/**/*.config.ts",
-    "packages/**/scripts/**/*.ts"
+    "."
   ],
   "exclude": [
-    "eslint.config.mts"
+    "apps",
+    "examples",
+    "node_modules",
+    "packages/*/dist",
+    "packages/*/src",
+    "packages/*/*/dist",
+    "packages/*/*/src"
   ]
 }

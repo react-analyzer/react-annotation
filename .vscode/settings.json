@@ -1,69 +1,31 @@
 {
   "[json]": {
-    "editor.defaultFormatter": "dprint.dprint",
-    "editor.quickSuggestions": {
-      "strings": true
-    }
+    "editor.defaultFormatter": "dprint.dprint"
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features",
-    "editor.quickSuggestions": {
-      "strings": true
-    }
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[typescript]": {
     "editor.defaultFormatter": "dprint.dprint"
   },
-  "[yaml]": {
-    "diffEditor.ignoreTrimWhitespace": false,
-    "editor.autoIndent": "keep",
-    "editor.defaultFormatter": "dprint.dprint",
-    "editor.insertSpaces": true,
-    "editor.quickSuggestions": {
-      "comments": false,
-      "other": true,
-      "strings": true
-    },
-    "editor.tabSize": 2
-  },
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "yaml",
-    "github-actions-workflow" // for GitHub Actions workflow files
-  ],
+  "dprint.path": "node_modules/.bin/dprint",
   "editor.codeActionsOnSave": {
-    "eslint.autoFix": "never",
     "source.fixAll": "never",
+    "source.fixAll.eslint": "never",
+    "source.formatting": "explicit",
     "source.organizeImports": "never"
   },
-  "eslint.workingDirectories": [
-    {
-      "changeProcessCWD": true,
-      "mode": "location"
-    },
-    {
-      "pattern": "examples/*",
-      "changeProcessCWD": true,
-      "mode": "auto"
-    },
-    {
-      "pattern": "website",
-      "changeProcessCWD": true,
-      "mode": "auto"
-    }
+  "editor.rulers": [
+    160
   ],
-  "mdx.server.enable": true,
-  "search.exclude": {
-    "pnpm-lock.yaml": true
-  },
+  "eslint.enable": false,
   "files.exclude": {
-    "**/.turbo": true,
-    ".npmignore": true,
-    "*.bundled_*.mjs": true
+    "*.bundled_*.mjs": true,
+    "**/.zed": true
   },
+  "mdx.server.enable": true,
+  "npm.packageManager": "pnpm",
+  "nxConsole.generateAiAgentRules": true,
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.tsdk": "node_modules/typescript/lib"
 }

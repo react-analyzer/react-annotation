@@ -16,7 +16,6 @@ import * as React from "react";
 
 /**
  * @component
- * @description A simple component that displays a name and age
  */
 function Introduction({ name, age }: { name: string; age: number }) {
   return <h1>My name is {name} and I am {age} years old</h1>;
@@ -40,7 +39,6 @@ import * as React from "react";
 
 /**
  * @component
- * @description An invalid component that returns an object
  */
 function InvalidReturnValue() {
   return new Object(); // ERROR: Value does not match `React.Node` type
@@ -48,7 +46,6 @@ function InvalidReturnValue() {
 
 /**
  * @component
- * @description An invalid component that does not return in all branches
  */
 function ImplicitReturn(someCond: boolean) {
   if (someCond) {
@@ -59,7 +56,6 @@ function ImplicitReturn(someCond: boolean) {
 
 /**
  * @component
- * @description An invalid component that uses `this`
  */
 function UsesThis() {
   this.foo = 3; // ERROR: Accessing `this`
@@ -72,11 +68,10 @@ function UsesThis() {
 ### Basic Usage
 
 ```tsx
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * @hook
- * @description A hook that returns the online status of the user
  */
 export function useOnlineStatus(initial: boolean): boolean {
   const [isOnline, setIsOnline] = useState(initial);
@@ -96,7 +91,7 @@ With hook annotation, we can now unambiguously distinguish syntactically between
 The distinction between hooks and regular functions is reflected in the JSDoc annotations. Because of the different properties that hooks and functions must obey, it’s TypeScript error to pass a value defined as a hook into a position that expects a function type, and an error to pass a regular JavaScript function into a position that expects a hook.
 
 ```tsx
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /** @hook */
 function useMultiplier(x: number): number {
