@@ -431,3 +431,7 @@ const menu4 = (
   </DesignSystemMenu>
 );
 ```
+
+## Disclaimer
+
+This project is not affiliated with Meta Corporation or [facebook/react](https://github.com/facebook/react) project or team, nor is it endorsed or sponsored by them.
